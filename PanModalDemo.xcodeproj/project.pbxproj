@@ -44,6 +44,8 @@
 		944EBA2E227BB7F400C4C97B /* FullScreenNavController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 944EBA2D227BB7F400C4C97B /* FullScreenNavController.swift */; };
 		94795C9B21F0335D008045A0 /* PanModalPresentationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94795C9A21F0335D008045A0 /* PanModalPresentationDelegate.swift */; };
 		94795C9D21F03368008045A0 /* PanContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94795C9C21F03368008045A0 /* PanContainerView.swift */; };
+		B8EA72F226574B5C00C480E0 /* KeyboardObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8EA72F126574B5C00C480E0 /* KeyboardObserver.swift */; };
+		B8EA72F526574B6800C480E0 /* KeyboardObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8EA72F126574B5C00C480E0 /* KeyboardObserver.swift */; };
 		DC13905E216D90D5007A3E64 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DC13905D216D90D5007A3E64 /* Assets.xcassets */; };
 		DC139061216D93ED007A3E64 /* SampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC139060216D93ED007A3E64 /* SampleViewController.swift */; };
 		DC139070216D9458007A3E64 /* PanModalPresentationAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC139066216D9458007A3E64 /* PanModalPresentationAnimator.swift */; };
@@ -116,6 +118,7 @@
 		944EBA2D227BB7F400C4C97B /* FullScreenNavController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenNavController.swift; sourceTree = "<group>"; };
 		94795C9A21F0335D008045A0 /* PanModalPresentationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PanModalPresentationDelegate.swift; sourceTree = "<group>"; };
 		94795C9C21F03368008045A0 /* PanContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PanContainerView.swift; sourceTree = "<group>"; };
+		B8EA72F126574B5C00C480E0 /* KeyboardObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardObserver.swift; sourceTree = "<group>"; };
 		DC13905D216D90D5007A3E64 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DC139060216D93ED007A3E64 /* SampleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleViewController.swift; sourceTree = "<group>"; };
 		DC139066216D9458007A3E64 /* PanModalPresentationAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PanModalPresentationAnimator.swift; sourceTree = "<group>"; };
@@ -269,6 +272,7 @@
 		DC139062216D9431007A3E64 /* PanModal */ = {
 			isa = PBXGroup;
 			children = (
+				B8EA72F126574B5C00C480E0 /* KeyboardObserver.swift */,
 				DC139065216D9458007A3E64 /* Animator */,
 				DC13906B216D9458007A3E64 /* Controller */,
 				DC139063216D9458007A3E64 /* Delegate */,
@@ -533,6 +537,7 @@
 			files = (
 				0F2A2C5E2239C137003BDB2F /* PanModalAnimator.swift in Sources */,
 				0F2A2C5F2239C139003BDB2F /* PanModalPresentationAnimator.swift in Sources */,
+				B8EA72F226574B5C00C480E0 /* KeyboardObserver.swift in Sources */,
 				0F2A2C602239C13C003BDB2F /* PanModalPresentationController.swift in Sources */,
 				0F2A2C612239C140003BDB2F /* PanModalPresentationDelegate.swift in Sources */,
 				0F2A2C622239C148003BDB2F /* PanModalHeight.swift in Sources */,
@@ -569,6 +574,7 @@
 				DC139073216D9458007A3E64 /* PanModalPresenter.swift in Sources */,
 				943904EF2226383700859537 /* NavigationController.swift in Sources */,
 				DC3B2EBE222A58C9000C8A4A /* AlertView.swift in Sources */,
+				B8EA72F526574B6800C480E0 /* KeyboardObserver.swift in Sources */,
 				74C072A5220BA76D00124CE1 /* PanModalHeight.swift in Sources */,
 				94795C9B21F0335D008045A0 /* PanModalPresentationDelegate.swift in Sources */,
 				943904F32226484F00859537 /* UserGroupStackedViewController.swift in Sources */,

@@ -180,6 +180,13 @@ open class PanModalPresentationController: UIPresentationController {
         layoutBackgroundView(in: containerView)
         layoutPresentedView(in: containerView)
         configureScrollViewInsets()
+        if !KeyboardObserver.shared.keyboardHandler.contains(where: {
+            $0.0 == self
+        }) {
+            KeyboardObserver.shared.keyboardHandler.append((self, {[weak self] (bool) in
+                self?.setNeedsLayoutUpdate()
+            }))
+        }
 
         guard let coordinator = presentedViewController.transitionCoordinator else {
             backgroundView.dimState = .max
@@ -221,6 +228,12 @@ open class PanModalPresentationController: UIPresentationController {
         if !completed { return }
         
         presentable?.panModalDidDismiss()
+        
+        if let index = KeyboardObserver.shared.keyboardHandler.firstIndex(where: {
+            $0.0 == self
+        }) {
+            KeyboardObserver.shared.keyboardHandler.remove(at: index)
+        }
     }
 
     /**
@@ -304,6 +317,7 @@ public extension PanModalPresentationController {
         adjustPresentedViewFrame()
         observe(scrollView: presentable?.panScrollable)
         configureScrollViewInsets()
+        
     }
 
 }
@@ -349,6 +363,9 @@ private extension PanModalPresentationController {
 
         if presentable.showDragIndicator {
             addDragIndicatorView(to: presentedView)
+            dragIndicatorView.isHidden = false
+        } else {
+            dragIndicatorView.isHidden = true
         }
 
         if presentable.shouldRoundTopCorners {
@@ -371,12 +388,13 @@ private extension PanModalPresentationController {
         let panFrame = panContainerView.frame
         panContainerView.frame.size = frame.size
         
-        if ![shortFormYPosition, longFormYPosition].contains(panFrame.origin.y) {
+//        if ![shortFormYPosition, longFormYPosition].contains(panFrame.origin.y) {
             // if the container is already in the correct position, no need to adjust positioning
             // (rotations & size changes cause positioning to be out of sync)
-            let yPosition = panFrame.origin.y - panFrame.height + frame.height
-            presentedView.frame.origin.y = max(yPosition, anchoredYPosition)
-        }
+//            let yPosition = panFrame.origin.y - panFrame.height + frame.height
+            //max(yPosition, anchoredYPosition)
+//        }
+        presentedView.frame.origin.y = anchoredYPosition
         panContainerView.frame.origin.x = frame.origin.x
         presentedViewController.view.frame = CGRect(origin: .zero, size: adjustedSize)
     }
@@ -425,6 +443,13 @@ private extension PanModalPresentationController {
         guard let layoutPresentable = presentedViewController as? PanModalPresentable.LayoutType
             else { return }
 
+        
+        if layoutPresentable.showDragIndicator {
+            dragIndicatorView.isHidden = false
+        } else {
+            dragIndicatorView.isHidden = true
+        }
+        
         shortFormYPosition = layoutPresentable.shortFormYPos
         longFormYPosition = layoutPresentable.longFormYPos
         anchorModalToLongForm = layoutPresentable.anchorModalToLongForm
