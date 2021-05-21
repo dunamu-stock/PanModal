@@ -96,7 +96,11 @@ extension PanModalPresentable where Self: UIViewController {
         case .maxHeightWithTopInset(let inset):
             return inset
         case .contentHeight(let height):
-            return bottomYPos - (height + bottomLayoutOffset)
+            if let keyboardHeight = (KeyboardObserver.shared.keyboardSizeValue), keyboardHeight != 0.0 {
+                return bottomYPos - (height + keyboardHeight)
+            }
+            
+            return bottomYPos - (height + bottomLayoutOffset + (KeyboardObserver.shared.keyboardSizeValue ?? 0))
         case .contentHeightIgnoringSafeArea(let height):
             return bottomYPos - height
         case .intrinsicHeight:
