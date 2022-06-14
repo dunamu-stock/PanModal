@@ -6,6 +6,20 @@
 	objectVersion = 50;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		BA1827F52786860F00283846 /* PanModal-Universal */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = BA1827F82786860F00283846 /* Build configuration list for PBXAggregateTarget "PanModal-Universal" */;
+			buildPhases = (
+				BA1827F92786861800283846 /* Universal Build */,
+			);
+			dependencies = (
+			);
+			name = "PanModal-Universal";
+			productName = "PanModal-Universal";
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		0F2A2C552239C119003BDB2F /* PanModal.h in Headers */ = {isa = PBXBuildFile; fileRef = 0F2A2C532239C119003BDB2F /* PanModal.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0F2A2C582239C119003BDB2F /* PanModal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F2A2C512239C119003BDB2F /* PanModal.framework */; };
@@ -478,6 +492,9 @@
 						CreatedOnToolsVersion = 10.1;
 						TestTargetID = DCA741A9216D90410021F2F2;
 					};
+					BA1827F52786860F00283846 = {
+						CreatedOnToolsVersion = 13.1;
+					};
 					DCA741A9216D90410021F2F2 = {
 						CreatedOnToolsVersion = 10.0;
 					};
@@ -499,6 +516,7 @@
 				DCA741A9216D90410021F2F2 /* PanModalDemo */,
 				743CABC32226171500634A5A /* PanModalTests */,
 				0F2A2C502239C119003BDB2F /* PanModal */,
+				BA1827F52786860F00283846 /* PanModal-Universal */,
 			);
 		};
 /* End PBXProject section */
@@ -529,6 +547,27 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		BA1827F92786861800283846 /* Universal Build */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Universal Build";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# 1\n# Set bash script to exit immediately if any commands fail.\nset -e\n\n# 2\n# Define variables.\nFRAMEWORK_NAME=\"PanModal\"\nCONFIGURATION=\"Release\"\nBUILD_PATH=\"${SRCROOT}/build\"\nUNIVERAL_BUILD_PATH=\"${BUILD_PATH}/${CONFIGURATION}-universal\"\n\n# 3\n# If remnants from a previous build exist, delete them.\nif [ -d \"${BUILD_PATH}\" ]; then\nrm -rf \"${BUILD_PATH}\"\nfi\n\n# 4\n# Build the framework for device.\nxcodebuild -target \"${FRAMEWORK_NAME}\" -configuration ${CONFIGURATION} -sdk \"iphoneos\" clean build\n\n# 5\n# Build the framework for simulator. (exclude arm64 for apple silicon)\nxcodebuild -target \"${FRAMEWORK_NAME}\" -configuration ${CONFIGURATION} -sdk \"iphonesimulator\" EXCLUDED_ARCHS=\"arm64\"\n\n# 6\n# Create directory to universal build.\nmkdir \"${UNIVERAL_BUILD_PATH}\"\n\n# 7\n# Copy the built device version of framework to univerasal build directory.\ncp -r \"${BUILD_PATH}/${CONFIGURATION}-iphoneos/${FRAMEWORK_NAME}.framework\" \"${UNIVERAL_BUILD_PATH}/\"\n\n# 8\n# Replace the framework executable within the framework with\n# a new version created by merging the device and simulator frameworks executables with lipo.\nlipo -create -output \"${UNIVERAL_BUILD_PATH}/${FRAMEWORK_NAME}.framework/${FRAMEWORK_NAME}\" \"${BUILD_PATH}/${CONFIGURATION}-iphoneos/${FRAMEWORK_NAME}.framework/${FRAMEWORK_NAME}\" \"${BUILD_PATH}/${CONFIGURATION}-iphonesimulator/${FRAMEWORK_NAME}.framework/${FRAMEWORK_NAME}\"\n\n# 9\n# Copy the swift module mappings for the simulator into the universal framework.\n# The device mappings already exist due to step 7.\ncp -r \"${BUILD_PATH}/${CONFIGURATION}-iphonesimulator/${FRAMEWORK_NAME}.framework/Modules/${FRAMEWORK_NAME}.swiftmodule/\" \"${UNIVERAL_BUILD_PATH}/${FRAMEWORK_NAME}.framework/Modules/${FRAMEWORK_NAME}.swiftmodule\"\n\n# 10\n# Open the build directory in finder\nopen \"${UNIVERAL_BUILD_PATH}\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		0F2A2C4D2239C119003BDB2F /* Sources */ = {
@@ -711,6 +750,22 @@
 			};
 			name = Release;
 		};
+		BA1827F62786860F00283846 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		BA1827F72786860F00283846 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		DCA741BA216D90420021F2F2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -888,6 +943,15 @@
 			buildConfigurations = (
 				743CABCC2226171500634A5A /* Debug */,
 				743CABCD2226171500634A5A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BA1827F82786860F00283846 /* Build configuration list for PBXAggregateTarget "PanModal-Universal" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BA1827F62786860F00283846 /* Debug */,
+				BA1827F72786860F00283846 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
