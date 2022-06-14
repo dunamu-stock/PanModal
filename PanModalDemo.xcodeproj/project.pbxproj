@@ -11,7 +11,7 @@
 			isa = PBXAggregateTarget;
 			buildConfigurationList = BA1827F82786860F00283846 /* Build configuration list for PBXAggregateTarget "PanModal-Universal" */;
 			buildPhases = (
-				BA1827F92786861800283846 /* Universal Build */,
+				BA1827F92786861800283846 /* Build XCFramework */,
 			);
 			dependencies = (
 			);
@@ -549,7 +549,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		BA1827F92786861800283846 /* Universal Build */ = {
+		BA1827F92786861800283846 /* Build XCFramework */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -558,14 +558,14 @@
 			);
 			inputPaths = (
 			);
-			name = "Universal Build";
+			name = "Build XCFramework";
 			outputFileListPaths = (
 			);
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# 1\n# Set bash script to exit immediately if any commands fail.\nset -e\n\n# 2\n# Define variables.\nFRAMEWORK_NAME=\"PanModal\"\nCONFIGURATION=\"Release\"\nBUILD_PATH=\"${SRCROOT}/build\"\nUNIVERAL_BUILD_PATH=\"${BUILD_PATH}/${CONFIGURATION}-universal\"\n\n# 3\n# If remnants from a previous build exist, delete them.\nif [ -d \"${BUILD_PATH}\" ]; then\nrm -rf \"${BUILD_PATH}\"\nfi\n\n# 4\n# Build the framework for device.\nxcodebuild -target \"${FRAMEWORK_NAME}\" -configuration ${CONFIGURATION} -sdk \"iphoneos\" clean build\n\n# 5\n# Build the framework for simulator. (exclude arm64 for apple silicon)\nxcodebuild -target \"${FRAMEWORK_NAME}\" -configuration ${CONFIGURATION} -sdk \"iphonesimulator\" EXCLUDED_ARCHS=\"arm64\"\n\n# 6\n# Create directory to universal build.\nmkdir \"${UNIVERAL_BUILD_PATH}\"\n\n# 7\n# Copy the built device version of framework to univerasal build directory.\ncp -r \"${BUILD_PATH}/${CONFIGURATION}-iphoneos/${FRAMEWORK_NAME}.framework\" \"${UNIVERAL_BUILD_PATH}/\"\n\n# 8\n# Replace the framework executable within the framework with\n# a new version created by merging the device and simulator frameworks executables with lipo.\nlipo -create -output \"${UNIVERAL_BUILD_PATH}/${FRAMEWORK_NAME}.framework/${FRAMEWORK_NAME}\" \"${BUILD_PATH}/${CONFIGURATION}-iphoneos/${FRAMEWORK_NAME}.framework/${FRAMEWORK_NAME}\" \"${BUILD_PATH}/${CONFIGURATION}-iphonesimulator/${FRAMEWORK_NAME}.framework/${FRAMEWORK_NAME}\"\n\n# 9\n# Copy the swift module mappings for the simulator into the universal framework.\n# The device mappings already exist due to step 7.\ncp -r \"${BUILD_PATH}/${CONFIGURATION}-iphonesimulator/${FRAMEWORK_NAME}.framework/Modules/${FRAMEWORK_NAME}.swiftmodule/\" \"${UNIVERAL_BUILD_PATH}/${FRAMEWORK_NAME}.framework/Modules/${FRAMEWORK_NAME}.swiftmodule\"\n\n# 10\n# Open the build directory in finder\nopen \"${UNIVERAL_BUILD_PATH}\"\n";
+			shellScript = "# 1\n# Set bash script to exit immediately if any commands fail.\nset -e\n\n# 2\n# Define variables.\nFRAMEWORK_NAME=\"PanModal\"\nARCHIVE_PATH=\"${SRCROOT}/build\"\n\n# 3\n# If remnants from a previous build exist, delete them.\nif [ -d \"${ARCHIVE_PATH}\" ]; then\n    rm -rf \"${ARCHIVE_PATH}\"\nfi\n\n# 4\n# Archive the framework for ios device.\nxcodebuild clean archive \\\n    -scheme \"${FRAMEWORK_NAME}\" \\\n    -archivePath \"${ARCHIVE_PATH}/${FRAMEWORK_NAME}-iphoneos.xcarchive\" \\\n    -sdk iphoneos \\\n    SKIP_INSTALL=NO\n\n# 5\n# Archive the framework for ios simulator.\nxcodebuild clean archive \\\n    -scheme \"${FRAMEWORK_NAME}\" \\\n    -archivePath \"${ARCHIVE_PATH}/${FRAMEWORK_NAME}-iphonesimulator.xcarchive\" \\\n    -sdk iphonesimulator \\\n    SKIP_INSTALL=NO\n\n# 6\n# Create a xcframework containing ios and simulator.\nxcodebuild -create-xcframework \\\n    -framework \"${ARCHIVE_PATH}/${FRAMEWORK_NAME}-iphoneos.xcarchive/Products/Library/Frameworks/${FRAMEWORK_NAME}.framework\" \\\n    -framework \"${ARCHIVE_PATH}/${FRAMEWORK_NAME}-iphonesimulator.xcarchive/Products/Library/Frameworks/${FRAMEWORK_NAME}.framework\" \\\n    -output \"${ARCHIVE_PATH}/${FRAMEWORK_NAME}.xcframework\"\n\n# 7\n# Fix error occur when the framework and class name are the same.\nfind . -name \"*.swiftinterface\" -exec sed -i -e \"s/${FRAMEWORK_NAME}\\.//g\" {} \\;\n\n# 8\n# Open the archived directory in finder.\nopen \"${ARCHIVE_PATH}\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -655,6 +655,7 @@
 		0F2A2C5B2239C119003BDB2F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -684,6 +685,7 @@
 		0F2A2C5C2239C119003BDB2F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -753,6 +755,7 @@
 		BA1827F62786860F00283846 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
 				CODE_SIGN_STYLE = Automatic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -761,6 +764,7 @@
 		BA1827F72786860F00283846 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
 				CODE_SIGN_STYLE = Automatic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
