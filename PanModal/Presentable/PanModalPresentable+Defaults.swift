@@ -52,7 +52,7 @@ public extension PanModalPresentable where Self: UIViewController {
     }
 
     var dragIndicatorBackgroundColor: UIColor {
-        return UIColor.lightGray
+        return UIColor.init(red: 0.87, green: 0.87, blue: 0.87, alpha: 1.0)
     }
 
     var scrollIndicatorInsets: UIEdgeInsets {
